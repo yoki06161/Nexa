@@ -17,7 +17,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     // SecurityFilterChain 빈 정의
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
