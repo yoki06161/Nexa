@@ -1,0 +1,104 @@
+<!-- src/main/resources/templates/members/list.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>구성원 목록</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons (Optional) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- 공통 CSS 파일 -->
+    <link href="/css/sidebar.css" rel="stylesheet">
+    <style>
+        .content {
+            padding: 20px;
+        }
+        .members-table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 사이드바 영역 -->
+            <nav class="col-md-2 sidebar" th:replace="fragments/sidebar :: sidebar">
+            </nav>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <main class="col-md-10 px-md-4 content">
+                <h2>구성원 목록</h2>
+                <!-- 검색 폼 -->
+                <form th:action="@{/members}" method="get" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="이름, 이메일, 직책, 부서명으로 검색" th:value="${search}">
+                        <button class="btn btn-outline-secondary" type="submit">검색</button>
+                    </div>
+                </form>
+                <a th:href="@{/departments/new}" class="btn btn-primary mb-3">새 부서 추가</a>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>직책</th>
+                            <th>부서</th>
+                            <th>상태</th>
+                            <th>액션</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="member, iterStat : ${membersPage.content}">
+                            <td th:text="${iterStat.index + 1 + (membersPage.number * membersPage.size)}">1</td>
+                            <td th:text="${member.name}">이름</td>
+                            <td th:text="${member.email}">이메일</td>
+                            <td th:text="${member.position}">직책</td>
+                            <td th:text="${member.departmentNames}">부서</td>
+                            <td th:text="${member.isDualRole ? '겸직' : '단일 직책'}">상태</td>
+                            <td>
+                                <a th:href="@{'/members/' + ${member.id}}" class="btn btn-sm btn-info">보기</a>
+                                <a th:href="@{'/members/' + ${member.id} + '/edit'}" class="btn btn-sm btn-warning" sec:authorize="hasRole('ADMIN')">수정</a>
+                                <a th:href="@{'/members/' + ${member.id} + '/delete'}" 
+                                   class="btn btn-sm btn-danger" 
+                                   onclick="return confirm('정말 삭제하시겠습니까?');"
+                                   sec:authorize="hasRole('ADMIN')">삭제</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- 페이지네이션 -->
+                <nav th:if="${membersPage.totalPages > 1}">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${membersPage.first} ? 'disabled'">
+                            <a class="page-link" th:href="@{/members(page=${membersPage.number - 1}, size=${membersPage.size}, search=${search})}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, membersPage.totalPages -1)}" 
+                            th:classappend="${i == membersPage.number} ? 'active'">
+                            <a class="page-link" th:href="@{/members(page=${i}, size=${membersPage.size}, search=${search})}" 
+                               th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${membersPage.last} ? 'disabled'">
+                            <a class="page-link" th:href="@{/members(page=${membersPage.number + 1}, size=${membersPage.size}, search=${search})}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <a th:href="@{/dashboard}" class="btn btn-secondary">대시보드로 돌아가기</a>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (Optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>

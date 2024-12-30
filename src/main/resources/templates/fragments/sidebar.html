@@ -1,0 +1,59 @@
+<!-- src/main/resources/templates/fragments/sidebar.html -->
+<div th:fragment="sidebar" class="sidebar">
+    <!-- 프로필 영역 -->
+    <div class="profile-area mb-4">
+        <div class="profile-pic mb-2">
+            <!-- 프로필 사진을 표시할 수 있는 영역 -->
+            <img src="/images/default-profile.png" alt="Profile Picture"
+                class="img-fluid rounded-circle" width="80" height="80">
+        </div>
+        <div class="profile-details text-center">
+            <span class="name" th:text="${#authentication.name}">이재현</span> <br />
+            <span class="role">인사1팀
+                · 대리</span>
+        </div>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}">
+                <i class="fas fa-home"></i> 홈
+        </a></li>
+        <li class="nav-item">
+            <!-- 메세지 아이콘 변경: fa-envelope → fa-comments --> <a class="nav-link"
+            th:href="@{/messages}"> <i class="fas fa-comments"></i> 메세지
+        </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/calendar}">
+                <i class="fas fa-calendar"></i> 캘린더
+        </a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/news}">
+                <i class="fas fa-bell"></i> 새로운 소식
+        </a></li>
+        <li class="nav-item"><a class="nav-link"
+            th:href="@{/user/profile}"> <i class="fas fa-user"></i> 사용자 관리
+        </a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/members}">
+                <i class="fas fa-users"></i> 구성원
+        </a></li>
+        <li class="nav-item"><a class="nav-link"
+            th:href="@{/announcements}"> <i class="fas fa-flag"></i> 공지사항
+        </a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/attendance}">
+                <i class="fas fa-clock"></i> 출퇴근
+        </a></li>
+        <li class="nav-item"><a class="nav-link"
+            th:href="@{/admin/settings}"> <i class="fas fa-cogs"></i> 설정
+        </a></li>
+        <!-- 역할에 따른 메뉴 추가 -->
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a
+            class="nav-link" th:href="@{/admin/dashboard}"> <i
+                class="fas fa-tools"></i> 관리자 대시보드
+        </a></li>
+    </ul>
+
+    <!-- 로그아웃 버튼 -->
+    <div class="logout-link mt-4">
+        <a th:href="@{/logout}" class="nav-link"> <i
+            class="fas fa-sign-out-alt"></i> 로그아웃
+        </a>
+    </div>
+</div>

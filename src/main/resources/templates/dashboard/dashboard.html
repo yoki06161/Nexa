@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexa - 대시보드</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons (Optional) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- 공통 CSS 파일 -->
+    <link href="/css/sidebar.css" rel="stylesheet">
+    <style>
+        .content {
+            padding: 20px;
+        }
+      
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 사이드바 영역 -->
+			<nav class="col-md-2 sidebar"
+			     th:replace="fragments/sidebar :: sidebar">
+			</nav>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <main class="col-md-10 px-md-4 content">
+                <!-- 최근 활동 테이블 -->
+                <div class="row">
+                    <div class="col-12">
+                        <h3>최근 활동</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>활동</th>
+                                    <th>날짜</th>
+                                    <th>상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>사용자 John Doe 등록</td>
+                                    <td>2024-04-25</td>
+                                    <td><span class="badge bg-success">완료</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>비밀번호 변경</td>
+                                    <td>2024-04-24</td>
+                                    <td><span class="badge bg-warning">진행 중</span></td>
+                                </tr>
+                                <!-- 추가 행들 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (Optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+	
+</body>
+</html>
