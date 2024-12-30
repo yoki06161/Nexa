@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Nexa - 회원가입</title>
@@ -86,6 +87,23 @@
                 </div>
                 
                 <div class="mb-4">
+                    <label class="form-label">역할 선택</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" th:field="*{role}" value="ROLE_ADMIN" id="roleAdmin" required>
+                        <label class="form-check-label" for="roleAdmin">
+                            관리자(Admin)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" th:field="*{role}" value="ROLE_USER" id="roleUser" required>
+                        <label class="form-check-label" for="roleUser">
+                            유저(User)
+                        </label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('role')}" class="text-danger" th:errors="*{role}"></div>
+                </div>
+
+                <div class="mb-4">
                     <label for="departments" class="form-label">부서 선택</label>
                     <select multiple class="form-select" id="departments" name="departmentIds">
                         <option th:each="dept : ${departments}" 
@@ -95,14 +113,6 @@
                     </select>
                     <small class="form-text text-muted">Ctrl 키를 누른 상태에서 여러 부서를 선택할 수 있습니다.</small>
                     <div th:if="${#fields.hasErrors('departments')}" class="text-danger" th:errors="*{departments}"></div>
-                </div>
-                
-                <div class="mb-4">
-                    <label for="isDualRole" class="form-label">겸직 여부</label>
-                    <select class="form-select" id="isDualRole" th:field="*{isDualRole}">
-                        <option value="false" th:text="'아니오'"></option>
-                        <option value="true" th:text="'예'"></option>
-                    </select>
                 </div>
 
                 <div class="d-grid gap-2">

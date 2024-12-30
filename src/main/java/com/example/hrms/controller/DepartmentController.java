@@ -1,3 +1,4 @@
+// src/main/java/com/example/hrms/controller/DepartmentController.java
 package com.example.hrms.controller;
 
 import com.example.hrms.model.Department;
@@ -16,13 +17,13 @@ public class DepartmentController {
     private DepartmentService departmentService;
     
     /**
-     * 부서 목록 페이지
+     * 부서 목록 페이지 - 상위 부서만 조회
      */
     @GetMapping
     public String listDepartments(Model model) {
-        List<Department> departments = departmentService.getAllDepartments();
+        List<Department> departments = departmentService.getRootDepartments(); // 상위 부서만 조회
         model.addAttribute("departments", departments);
-        return "departments/list";
+        return "departments/list"; // Thymeleaf 템플릿 경로
     }
     
     /**
@@ -84,5 +85,18 @@ public class DepartmentController {
     public String deleteDepartment(@PathVariable Long id) {
         departmentService.deleteDepartment(id);
         return "redirect:/departments";
+    }
+    
+    /**
+     * 하위 부서 목록 페이지
+     */
+    @GetMapping("/{id}/subdepartments")
+    public String listSubDepartments(@PathVariable Long id, Model model) {
+        Department parentDept = departmentService.getDepartmentById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Invalid department Id:" + id));
+        List<Department> subDepartments = departmentService.getSubDepartments(id);
+        model.addAttribute("parentDepartment", parentDept);
+        model.addAttribute("departments", subDepartments);
+        return "departments/sublist"; // 새로운 Thymeleaf 템플릿 경로
     }
 }

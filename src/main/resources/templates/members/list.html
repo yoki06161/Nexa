@@ -57,7 +57,7 @@
                             <td th:text="${member.email}">이메일</td>
                             <td th:text="${member.position}">직책</td>
                             <td th:text="${member.departmentNames}">부서</td>
-                            <td th:text="${member.isDualRole ? '겸직' : '단일 직책'}">상태</td>
+                            <td th:text="${member.status}">상태</td>
                             <td>
                                 <a th:href="@{'/members/' + ${member.id}}" class="btn btn-sm btn-info">보기</a>
                                 <a th:href="@{'/members/' + ${member.id} + '/edit'}" class="btn btn-sm btn-warning" sec:authorize="hasRole('ADMIN')">수정</a>

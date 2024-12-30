@@ -19,18 +19,19 @@ public class User {
 
     private String name;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
 
     private String position; // 직책 필드
 
-    private String role;
-
-    private boolean isDualRole; // 이중 역할 여부 필드
+    private String role; // 역할 필드 (ROLE_ADMIN, ROLE_USER)
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    private boolean approved; // 승인 여부 필드
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

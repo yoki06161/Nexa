@@ -1,3 +1,4 @@
+<!-- src/main/resources/templates/departments/list.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,6 +8,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- 공통 CSS 파일 -->
     <link href="/css/sidebar.css" rel="stylesheet">
+    <!-- Font Awesome CSS for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-d+yV4BfKQdUphvEvyKRi19S0FmPhJkS8jG2PHrVhaA3q1MFYIHT/4bbfzIkkuQECXuJHKVmPOQr2VjTgrzHktg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .toggle-btn {
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        /* Indentation for child rows */
+        .indent-1 {
+            padding-left: 20px;
+        }
+        .indent-2 {
+            padding-left: 40px;
+        }
+        /* Add more indentation levels if needed */
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -24,19 +43,27 @@
                         <tr>
                             <th>#</th>
                             <th>부서명</th>
-                            <th>상위 부서</th>
                             <th>소속 인원 수</th>
                             <th>액션</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="dept, iterStat : ${departments}">
+                        <!-- 루트 부서 반복 -->
+                        <tr th:each="dept, iterStat : ${departments}"
+                            th:attr="data-id=${dept.id}, data-parent-id=${dept.parentDepartment != null ? dept.parentDepartment.id : ''}"
+                            th:classappend="${dept.parentDepartment == null} ? 'parent-row' : 'child-row'">
                             <td th:text="${iterStat.index + 1}">1</td>
-                            <td th:text="${dept.name}">부서명</td>
-                            <td th:text="${dept.parentDepartment != null ? dept.parentDepartment.name : '없음'}">상위 부서</td>
+                            <td>
+                                <span th:if="${dept.children.size() > 0}" class="toggle-btn" 
+                                      th:attr="data-dept-id=${dept.id}">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span>
+                                <span th:text="${dept.name}">부서명</span>
+                            </td>
                             <td th:text="${#lists.size(dept.users)}">인원 수</td>
                             <td>
-                                <a th:href="@{'/departments/' + ${dept.id}}" class="btn btn-sm btn-info">보기</a>
+                                <!-- "보기" 버튼을 새로운 경로로 수정 -->
+                                <a th:href="@{'/departments/' + ${dept.id} + '/subdepartments'}" class="btn btn-sm btn-info">보기</a>
                                 <a th:href="@{'/departments/' + ${dept.id} + '/edit'}" class="btn btn-sm btn-warning">수정</a>
                                 <a th:href="@{'/departments/' + ${dept.id} + '/delete'}" 
                                    class="btn btn-sm btn-danger" 
@@ -50,7 +77,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS and Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

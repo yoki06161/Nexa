@@ -1,3 +1,4 @@
+// src/main/java/com/example/hrms/config/SecurityConfig.java
 package com.example.hrms.config;
 
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     // SecurityFilterChain 빈 정의
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -26,13 +28,10 @@ public class SecurityConfig {
                 .requestMatchers("/register", "/register/**", "/forgot-password", "/forgot-password/**", "/css/**", "/js/**", "/images/**").permitAll()
                 // ADMIN 전용 경로
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                // /members 및 /address-book 접근을 ADMIN과 USER 역할로 허용
-                .requestMatchers("/members/**", "/address-book/**").hasAnyRole("ADMIN", "USER")
-                // USER 전용 경로
-                .requestMatchers("/user/**").hasRole("USER")
-                // 대시보드 경로 인증 필요
+                // 부서 목록 접근을 ADMIN 역할로 제한
+                .requestMatchers("/departments/**").hasRole("ADMIN")
+                // 기타 경로 설정
                 .requestMatchers("/dashboard/**", "/dashboard").authenticated()
-                // 그 외 모든 요청은 인증 필요
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -44,6 +43,9 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
+            )
+            .exceptionHandling(exception -> exception
+                .accessDeniedPage("/access-denied") // 접근 거부 페이지 설정
             )
             .csrf().disable(); // 필요에 따라 CSRF 보호 활성화/비활성화
         return http.build();

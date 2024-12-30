@@ -45,10 +45,7 @@ public class AuthController {
             result.rejectValue("email", "error.user", "이미 사용 중인 이메일입니다.");
         }
 
-        // 부서 선택 확인
-        if (departmentIds == null || departmentIds.length == 0) {
-            result.rejectValue("departments", "error.user", "적어도 하나의 부서를 선택해야 합니다.");
-        }
+        
 
         // 에러가 있으면 회원가입 페이지로 다시 이동
         if (result.hasErrors()) {

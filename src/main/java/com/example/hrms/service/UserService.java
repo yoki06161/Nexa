@@ -84,7 +84,6 @@ public class UserService {
             existingUser.setPosition(user.getPosition());
             existingUser.setDepartments(user.getDepartments());
             existingUser.setRole(user.getRole());
-            existingUser.setDualRole(user.isDualRole());
             existingUser.setStatus(user.getStatus());
             // 비밀번호는 변경 시 별도의 로직 필요
             userRepository.save(existingUser);
